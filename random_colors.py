@@ -13,6 +13,7 @@ hostname = "http://192.168.86.180"
 device_type = "my_hue_app#my_hostname"
 hue_max = 65535
 hue_step = 500
+sat_max = 254
 
 with open ('api_key', 'r+') as file:
     api_key = file.readline()
@@ -33,9 +34,9 @@ url = hostname+"/api/"+api_key+"/"
 
 # init lights
 r = requests.get(url).json()
-pp(r)
+# pp(r)
 lights = {i:l['state'] for i,l in r['lights'].items() if l['state']['on']}
-pp(lights)
+# pp(lights)
 
 # r = requests.put(url+"lights/1/state", data=json.dumps({'hue': 0}))
 # pp(r.json())
@@ -43,15 +44,18 @@ pp(lights)
 
 # seed lights
 for i in lights:
-    lights[i]['hue'] = random.random()*hue_max
+    lights[i]['hue'] = int(random.random()*hue_max)
+    r = requests.put(url+"lights/"+i+"/state", data=json.dumps({'sat': sat_max}))
+pp(lights)
 
 while True:
     time.sleep(0.1)
     # time.sleep(2)
     # x += 1
     for i,l in lights.items():
-        x = random.random()*hue_step # one way
-        lights[i]['hue'] = int(l['hue']+x) if l['hue']+x <= hue_max else 0
+        x = int(random.random()*(hue_step*2)-hue_step) # two way
+        # x = int(random.random()*hue_step) # one way
+        lights[i]['hue'] = int(l['hue']+x) if l['hue']+x <= hue_max and l['hue']+x > 0 else 0
         print(i, x, lights[i]['hue'])
         r = requests.put(url+"lights/"+i+"/state", data=json.dumps({'hue': lights[i]['hue']}))
         pp(r.json())
