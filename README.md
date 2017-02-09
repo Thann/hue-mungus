@@ -2,9 +2,12 @@
 
 Scripts to control phillips Hue light bulbs
 
+Effects all lights connected to a bridge
+
+Press bridge button before first run.
+
 ## random colors
-`./random_colors.py`
-all of the lights gradually change hue.
+`./random_colors.py` lights gradually change hue.
 
 ## Disco
 `./disco.py` lights rapidly change colors
