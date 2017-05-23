@@ -1,0 +1,9 @@
+{
+  "name": "hue-mungus",
+  "version": "0.0.1",
+  "description": "Unofficial Phillips Hue CLI",
+  "dependencies": {
+    "blessed": "^0.1.81",
+    "request-promise-native": "^1.0.4"
+  }
+}
